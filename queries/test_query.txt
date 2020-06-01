@@ -1,0 +1,4 @@
+MATCH p=()-[r:DIRECTED]->()<-[:PLAYED]-() RETURN p LIMIT 100
+MATCH p=(d:Director)-[r:DIRECTED]->()<-[:PLAYED]-() where d.name="Martin Scorsese" RETURN p
+MATCH p=(d:Director)-[r:DIRECTED]->()<-[:PLAYED]-(a:Actor) where d.name="Sergio Leone" AND a.name="Clint Eastwood"  RETURN p 
+MATCH p=(d:Director)-[r:DIRECTED]->(m:Movie)<-[:PLAYED]-(a:Actor) where m.genre="Horror" AND m.score>7  RETURN p 

@@ -1,0 +1,30 @@
+CREATE CONSTRAINT ON (actor:Actor) ASSERT actor.id IS UNIQUE
+CREATE CONSTRAINT ON (director:Director) ASSERT director.id IS UNIQUE
+CREATE CONSTRAINT ON (movies:Movies) ASSERT movies.id IS UNIQUE
+
+
+LOAD CSV WITH HEADERS FROM 'file:///actor.csv' AS Acline 
+CREATE (actor:Actor {id: toInteger(Acline.id), name: Acline.actor_name})
+
+LOAD CSV WITH HEADERS FROM 'file:///director.csv' AS Diline
+CREATE (director:Director {id: toInteger(Diline.id), name: Diline.director_name})
+
+
+LOAD CSV WITH HEADERS FROM 'file:///movies.csv' AS Moline
+CREATE (movie:Movie {id: toInteger(Moline.id), title: Moline.movie_title, year:toInteger(Moline.title_year), genre: Moline.genres, duration:toInteger(Moline.duration), score:toInteger(Moline.imdb_score)})
+
+
+
+
+
+LOAD CSV WITH HEADERS FROM 'file:///act_mov.csv' AS AMline
+MATCH (actor:Actor {id: toInteger(AMline.actor_id)}),(movie:Movie {id: toInteger(AMline.movie_id)})
+CREATE (actor)-[:PLAYED]->(movie)
+
+
+
+LOAD CSV WITH HEADERS FROM 'file:///dir_mov.csv' AS DMline
+MATCH (director:Director {id: toInteger(DMline.director_id)}),(movie:Movie {id: toInteger(DMline.movie_id)})
+CREATE (director)-[:DIRECTED]->(movie)
+
+
